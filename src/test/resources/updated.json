@@ -1,0 +1,61 @@
+{
+  "verb": "UPDATED",
+  "event": {
+    "metadata": {
+      "name": "heptio-source-http-8-qfx6c.153ff6d5768eaafc",
+      "namespace": "myproject",
+      "selfLink": "/api/v1/namespaces/myproject/events/heptio-source-http-8-qfx6c.153ff6d5768eaafc",
+      "uid": "02c58deb-8421-11e8-a6b6-9aea71cf1083",
+      "resourceVersion": "9276",
+      "creationTimestamp": "2018-07-10T09:09:55Z"
+    },
+    "involvedObject": {
+      "kind": "Pod",
+      "namespace": "myproject",
+      "name": "heptio-source-http-8-qfx6c",
+      "uid": "f0fdcce0-8420-11e8-a6b6-9aea71cf1083",
+      "apiVersion": "v1",
+      "resourceVersion": "8306",
+      "fieldPath": "spec.containers{wildfly-swarm}"
+    },
+    "reason": "BackOff",
+    "message": "Back-off restarting failed container",
+    "source": {
+      "component": "kubelet",
+      "host": "localhost"
+    },
+    "firstTimestamp": "2018-07-10T09:09:55Z",
+    "lastTimestamp": "2018-07-10T09:19:29Z",
+    "count": 38,
+    "type": "Warning"
+  },
+  "old_event": {
+    "metadata": {
+      "name": "heptio-source-http-8-qfx6c.153ff6d5768eaafc",
+      "namespace": "myproject",
+      "selfLink": "/api/v1/namespaces/myproject/events/heptio-source-http-8-qfx6c.153ff6d5768eaafc",
+      "uid": "02c58deb-8421-11e8-a6b6-9aea71cf1083",
+      "resourceVersion": "8828",
+      "creationTimestamp": "2018-07-10T09:09:55Z"
+    },
+    "involvedObject": {
+      "kind": "Pod",
+      "namespace": "myproject",
+      "name": "heptio-source-http-8-qfx6c",
+      "uid": "f0fdcce0-8420-11e8-a6b6-9aea71cf1083",
+      "apiVersion": "v1",
+      "resourceVersion": "8306",
+      "fieldPath": "spec.containers{wildfly-swarm}"
+    },
+    "reason": "BackOff",
+    "message": "Back-off restarting failed container",
+    "source": {
+      "component": "kubelet",
+      "host": "localhost"
+    },
+    "firstTimestamp": "2018-07-10T09:09:55Z",
+    "lastTimestamp": "2018-07-10T09:14:33Z",
+    "count": 17,
+    "type": "Warning"
+  }
+}
