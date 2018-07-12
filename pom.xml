@@ -73,12 +73,7 @@
                                 <expose>true</expose>
                             </service>
                         </labels>
-                        <env>
-                            <DEBUG>true</DEBUG>
-                        </env>
                     </resources>
-
-
                 </configuration>
             </plugin>
 

@@ -1,16 +1,15 @@
 package io.streamzi.router.source.heptio;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.streamzi.cloudevents.CloudEvent;
 import org.aerogear.kafka.SimpleKafkaProducer;
 import org.aerogear.kafka.cdi.annotation.KafkaConfig;
 import org.aerogear.kafka.cdi.annotation.Producer;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.json.JsonObject;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -25,9 +24,18 @@ public class HeptioEndpoint {
     private final static Logger logger = Logger.getLogger(HeptioEndpoint.class.getName());
 
     @Producer
-    private SimpleKafkaProducer<String, CloudEvent> myproducer;
+    private SimpleKafkaProducer<String, String> myproducer;
 
     private static final String topic = System.getenv("KAFKA_TOPIC");
+
+    private static ObjectMapper mapper = new ObjectMapper();
+
+    static {
+
+        mapper.registerModule(new Jdk8Module());
+        mapper.registerModule(new JavaTimeModule());
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    }
 
     @POST
     @Produces("application/json")
@@ -53,7 +61,7 @@ public class HeptioEndpoint {
 
                 logger.info(ce.getEventType());
 
-                myproducer.send(topic, ce.getEventType(), ce);
+                myproducer.send(topic, ce.getEventType(), mapper.writeValueAsString(ce));
 
             }
 
