@@ -58,10 +58,6 @@ Problems with asynchronous systems...
 In testing, the deployment config does not always appear to have the environment variables injected into it following a re-deploy.
 This needs more testing (I think that Strimzi has a reconciliation process) but if you edit the ConfigMap (eg. add a label) the change will be picked up and the application redeployed.
 
-1. I think that there is an issue with the serialisation of CloudEvents. 
-When using the Kafka CLI to consume the topic CloudEvents are sent to, the Optional fields are marked as <present>. 
-I think this is an issue with Jackson serialisation but not sure if it's here or in the jCloudEvents library. 
-
 1. Can the Heptio Event Router be deployed into another namespace?
 
 1. The endpoint name needs updating
