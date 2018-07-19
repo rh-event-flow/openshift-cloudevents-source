@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response;
 import java.util.logging.Logger;
 
 @ApplicationScoped
-@Path("/hello")
+@Path("/heptio")
 @KafkaConfig(bootstrapServers = "#{KAFKA_SERVICE_HOST}:#{KAFKA_SERVICE_PORT}")
 public class HeptioEndpoint {
 
@@ -35,6 +35,7 @@ public class HeptioEndpoint {
         mapper.registerModule(new Jdk8Module());
         mapper.registerModule(new JavaTimeModule());
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
     }
 
     @POST

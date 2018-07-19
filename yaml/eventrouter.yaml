@@ -16,7 +16,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: eventrouter
-  namespace: kube-system
+  namespace: myproject
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
@@ -38,27 +38,27 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: eventrouter
-  namespace: kube-system
+  namespace: myproject
 ---
 apiVersion: v1
 data:
   config.json: |-
     {
       "sink": "http",
-      "httpSinkUrl": "http://172.30.0.55:8080/rest/hello",
+      "httpSinkUrl": "http://heptio-source:8080/post/heptio",
       "httpSinkBufferSize": 1500,
       "httpSinkDiscardMessages": true
     }
 kind: ConfigMap
 metadata:
   name: eventrouter-cm
-  namespace: kube-system
+ namespace: myproject
 ---
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: eventrouter
-  namespace: kube-system
+  namespace: myproject
   labels:
     app: eventrouter
 spec:

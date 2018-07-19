@@ -3,8 +3,7 @@ kind: ConfigMap
 metadata:
   name: heptio-source-cm.yml
   labels:
-    streamzi.io/targetKey: app
-    streamzi.io/targetValue: heptio-source
+    streamzi.io/target: heptio-source
     streamzi.io/kind: ev
 data:
   kafka.service.host: my-cluster-kafka
