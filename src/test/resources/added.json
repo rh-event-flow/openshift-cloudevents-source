@@ -1,0 +1,30 @@
+{
+  "verb": "ADDED",
+  "event": {
+    "metadata": {
+      "name": "envvaroperator.153fbce300bceb2b",
+      "namespace": "myproject",
+      "selfLink": "/api/v1/namespaces/myproject/events/envvaroperator.153fbce300bceb2b",
+      "uid": "aa8e9201-838c-11e8-a6b6-9aea71cf1083",
+      "resourceVersion": "1861",
+      "creationTimestamp": "2018-07-09T15:28:01Z"
+    },
+    "involvedObject": {
+      "kind": "DeploymentConfig",
+      "namespace": "myproject",
+      "name": "envvaroperator",
+      "uid": "85c2ea13-838c-11e8-a6b6-9aea71cf1083",
+      "apiVersion": "apps.openshift.io",
+      "resourceVersion": "1846"
+    },
+    "reason": "DeploymentCreated",
+    "message": "Created new replication controller \"envvaroperator-3\" for version 3",
+    "source": {
+      "component": "deploymentconfig-controller"
+    },
+    "firstTimestamp": "2018-07-09T15:28:01Z",
+    "lastTimestamp": "2018-07-09T15:28:01Z",
+    "count": 1,
+    "type": "Normal"
+  }
+}
