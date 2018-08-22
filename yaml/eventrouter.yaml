@@ -52,7 +52,7 @@ data:
 kind: ConfigMap
 metadata:
   name: eventrouter-cm
- namespace: myproject
+  namespace: myproject
 ---
 apiVersion: apps/v1beta2
 kind: Deployment
@@ -73,14 +73,14 @@ spec:
         tier: control-plane-addons
     spec:
       containers:
-        - name: kube-eventrouter
-          image: gcr.io/heptio-images/eventrouter:latest
-          imagePullPolicy: IfNotPresent
-          volumeMounts:
-          - name: config-volume
-            mountPath: /etc/eventrouter
+      - name: kube-eventrouter
+        image: gcr.io/heptio-images/eventrouter:latest
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/eventrouter
       serviceAccount: eventrouter
       volumes:
-        - name: config-volume
-          configMap:
-            name: eventrouter-cm
+      - name: config-volume
+        configMap:
+          name: eventrouter-cm
