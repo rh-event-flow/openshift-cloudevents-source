@@ -1,4 +1,4 @@
-# Heptio Cloud Event Source
+# OpenShift Cloud Event Source
 
 This application listens to an HTTP endpoint for events coming from the [Heptio Event Router](https://github.com/heptiolabs/eventrouter) deployed on OpenShift.
 The Heptio events will be converted into [CNCF CloudEvents](http://cloudevents.io) and forwarded to an Apache Kafka topic.
@@ -9,8 +9,11 @@ Feedback, suggestions, reviews are welcomed!
 
 ## Installation
 
-At the moment, these steps need to be completed in order as the IP address of the heptio-source needs to be known before deploying the Heptio Event Router.
-There may be a better way of deploying these with the correct namespaces and permissions
+### Automated
+
+Use the [OCP Broker](https://github.com/project-streamzi/ocp-broker).
+
+### Manual
 
 1. Deploy [Strimzi](http://strimzi.io).
 
@@ -55,5 +58,3 @@ However, with an unknown schema I couldn't get them to serialise nicely.
 
 1. There will be a better mapping from Heptio Event -> CloudEvent but this is a first pass. 
 To be discussed / improved.
-
-1. The whole system might be better deployed via a different method (Deployment?) that can include the Heptio Event Router and the endpoint?
