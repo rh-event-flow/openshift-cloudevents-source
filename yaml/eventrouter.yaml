@@ -15,13 +15,13 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: eventrouter
+  name: openshift-event-source
   namespace: myproject
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
-  name: eventrouter
+  name: openshift-event-source
 rules:
 - apiGroups: [""]
   resources: ["events"]
@@ -30,14 +30,14 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
-  name: eventrouter
+  name: openshift-event-source
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: eventrouter
+  name: openshift-event-source
 subjects:
 - kind: ServiceAccount
-  name: eventrouter
+  name: openshift-event-source
   namespace: myproject
 ---
 apiVersion: v1
@@ -45,42 +45,42 @@ data:
   config.json: |-
     {
       "sink": "http",
-      "httpSinkUrl": "http://heptio-source:8080/post/heptio",
+      "httpSinkUrl": "http://openshift-cloud-event-source/post/heptio",
       "httpSinkBufferSize": 1500,
       "httpSinkDiscardMessages": true
     }
 kind: ConfigMap
 metadata:
-  name: eventrouter-cm
+  name: openshift-event-source-cm
   namespace: myproject
 ---
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: eventrouter
+  name: openshift-event-source
   namespace: myproject
   labels:
-    app: eventrouter
+    app: openshift-event-source
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: eventrouter
+      app: openshift-event-source
   template:
     metadata:
       labels:
-        app: eventrouter
+        app: openshift-event-source
         tier: control-plane-addons
     spec:
       containers:
-      - name: kube-eventrouter
+      - name: kube-openshift-event-source
         image: gcr.io/heptio-images/eventrouter:latest
         imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: config-volume
           mountPath: /etc/eventrouter
-      serviceAccount: eventrouter
+      serviceAccount: openshift-event-source
       volumes:
       - name: config-volume
         configMap:
-          name: eventrouter-cm
+          name: openshift-event-source-cm
