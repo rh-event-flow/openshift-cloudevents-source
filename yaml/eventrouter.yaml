@@ -45,7 +45,7 @@ data:
   config.json: |-
     {
       "sink": "http",
-      "httpSinkUrl": "http://openshift-cloud-event-source/post/heptio",
+      "httpSinkUrl": "http://k8s-cloud-event-source/post/heptio",
       "httpSinkBufferSize": 1500,
       "httpSinkDiscardMessages": true
     }
