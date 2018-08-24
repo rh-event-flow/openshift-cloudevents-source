@@ -6,7 +6,7 @@ metadata:
     streamzi.io/target: heptio-source
     streamzi.io/kind: ev
 data:
-  kafka.service.host: my-cluster-kafka
-  kafka.service.port: 9092
-  kafka.topic: gw.global.input.cloudevents
+  KAFKA_SERVICE_HOST: my-cluster-kafka
+  KAFKA_SERVICE_PORT: 9092
+  KAFKA_TOPIC: gw.global.input.cloudevents
 
