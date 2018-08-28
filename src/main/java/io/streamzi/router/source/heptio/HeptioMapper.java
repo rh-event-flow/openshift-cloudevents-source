@@ -17,16 +17,22 @@ import java.util.Map;
 /**
  * Translate a Heptio event into a CNCF CloudEvent
  */
-public class HeptioMapper {
+public final class HeptioMapper {
 
-    public static CloudEvent toCloudEvent(String heptioInput) {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
+
+    private HeptioMapper() {
+        // no-op
+    }
+
+    public static CloudEvent toCloudEvent(final String heptioInput) {
 
         //Represent the input as a Map
-        final ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> heptio = new HashMap<>();
 
         try {
-            heptio = mapper.readValue(heptioInput, HashMap.class);
+            heptio = MAPPER.readValue(heptioInput, HashMap.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
