@@ -1,4 +1,4 @@
-package io.streamzi.router.source.heptio;
+package io.streamzi.cloudevents.openshift;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.streamzi.cloudevents.CloudEvent;
@@ -15,35 +15,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Translate a Heptio event into a CNCF CloudEvent
+ * Translate a k8s platform event into a CNCF CloudEvent
  */
-public final class HeptioMapper {
+public final class CloudEventsMapper {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
-
-    private HeptioMapper() {
+    private CloudEventsMapper() {
         // no-op
     }
 
-    public static CloudEvent toCloudEvent(final String heptioInput) {
+    public static CloudEvent toCloudEvent(final String rawK8sEvent) {
 
         //Represent the input as a Map
-        Map<String, Object> heptio = new HashMap<>();
+        Map<String, Object> k8sEventMap = new HashMap<>();
 
         try {
-            heptio = MAPPER.readValue(heptioInput, HashMap.class);
+            k8sEventMap = MAPPER.readValue(rawK8sEvent, HashMap.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        if (heptio.get("verb").equals("ADDED") || heptio.get("verb").equals("UPDATED")) {
+        if (k8sEventMap.get("verb").equals("ADDED") || k8sEventMap.get("verb").equals("UPDATED")) {
 
-            final Map<String, Object> event = (Map<String, Object>) heptio.get("event");
+            final Map<String, Object> event = (Map<String, Object>) k8sEventMap.get("event");
             final Map<String, Object> metadata = ((Map<String, Object>) (event.get("metadata")));
 
             final String ts = (String) metadata.get("creationTimestamp");
-
 
             final Instant dateInstant = Instant.from(DateTimeFormatter.ISO_INSTANT.parse(ts));
             final ZonedDateTime timestamp = ZonedDateTime.ofInstant(dateInstant, ZoneOffset.UTC);
@@ -58,7 +56,7 @@ public final class HeptioMapper {
             }
 
             if (eventType == null || eventType.equals("")) {
-                System.err.println(heptioInput);
+                System.err.println(rawK8sEvent);
                 return new CloudEventBuilder<String>().build();
             }
 
@@ -72,7 +70,7 @@ public final class HeptioMapper {
             }
 
             return new CloudEventBuilder<Map<String, Object>>()
-                    .data(heptio)
+                    .data(k8sEventMap)
                     .contentType("application/json")
                     .eventTime(timestamp)
                     .eventType(eventType.toLowerCase())
@@ -83,7 +81,7 @@ public final class HeptioMapper {
                     .build();
 
         } else {
-            throw new IllegalArgumentException("Received Heptio event with type: " + heptio.get("verb"));
+            throw new IllegalArgumentException("Received Heptio event with type: " + k8sEventMap.get("verb"));
         }
 
     }

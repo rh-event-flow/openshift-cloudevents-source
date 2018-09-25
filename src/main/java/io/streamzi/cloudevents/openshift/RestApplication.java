@@ -1,4 +1,4 @@
-package io.streamzi.router.source.heptio;
+package io.streamzi.cloudevents.openshift;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

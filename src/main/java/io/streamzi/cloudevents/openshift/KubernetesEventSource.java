@@ -1,4 +1,4 @@
-package io.streamzi.router.source.heptio;
+package io.streamzi.cloudevents.openshift;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -14,14 +14,15 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @ApplicationScoped
 @Path("/heptio")
 @KafkaConfig(bootstrapServers = "#{KAFKA_SERVICE_HOST}:#{KAFKA_SERVICE_PORT}")
-public class HeptioEndpoint {
+public class KubernetesEventSource {
 
-    private final static Logger logger = Logger.getLogger(HeptioEndpoint.class.getName());
+    private final static Logger logger = Logger.getLogger(KubernetesEventSource.class.getName());
 
     @Producer
     private SimpleKafkaProducer<String, String> myproducer;
@@ -40,37 +41,33 @@ public class HeptioEndpoint {
 
     @POST
     @Produces("application/json")
-    public Response doPost(String payload) {
+    public Response transformPlatformEventsToCloudEvents(final String payload) {
 
         try {
 
             //We might get events messages per payload if the endpoint has been down
             //https://github.com/heptiolabs/eventrouter/pull/21
-            String[] lines = payload.split("\n");
-            for (String line : lines) {
+            final String[] lines = payload.split("\n");
+
+            for (final String line : lines) {
 
                 //This is a dirty hack to parse the format of the syslog messsage that Heptio sends
                 //TODO: replace with Syslog parsing library.
-                String[] eventParts = line.split("- - - ");
+                final String[] eventParts = line.split("- - - ");
                 if (eventParts.length != 2) {
                     logger.severe("Unable to parse: " + payload);
                     return Response.serverError().build();
                 }
-                String heptioEvent = eventParts[1];
 
-                CloudEvent ce = HeptioMapper.toCloudEvent(heptioEvent);
-
+                final CloudEvent ce = CloudEventsMapper.toCloudEvent(eventParts[1]);
                 logger.info(ce.getEventType());
-
                 myproducer.send(topic, ce.getEventType(), mapper.writeValueAsString(ce));
-
             }
 
             return Response.ok().build();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, e.getMessage(), e);
             return Response.serverError().build();
         }
-
     }
 }
